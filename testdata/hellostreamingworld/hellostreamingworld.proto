@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package hellostreamingworld;
+
+option go_package = "/hellostreamingworld/;hellostreamingworldpb";
+
+service MultiGreeter {
+  rpc sayHello (HelloRequest) returns (stream HelloReply) {}
+}
+
+message HelloRequest {
+  string name = 1;
+  string num_greetings = 2;
+}
+
+message HelloReply {
+  string message = 1;
+}

@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package main;
+
+option go_package = "./;main";
+
+import "google/api/annotations.proto";
+
+service Messaging {
+  rpc GetMessage(GetMessageRequest) returns (GetMessageResponse) {
+    option (google.api.http).get = "/v1/messages/{message_id}";
+  }
+  rpc UpdateMessage(UpdateMessageRequest) returns (UpdateMessageResponse) {
+    option (google.api.http) = {
+      put: "/v1/messages/{message_id}/{sub.subfield}"
+      body: "*"
+    };
+  }
+  rpc CreateMessage(CreateMessageRequest) returns (CreateMessageResponse) {
+    option (google.api.http) = {
+      post: "/v1/messages/{message_id}/{msg.sub.subfield}/{sub.subfield}"
+      body: "*"
+    };
+  }
+}
+
+message GetMessageRequest {
+  string message_id = 1;
+  string message = 2;
+  repeated string tags = 3;
+}
+
+message GetMessageResponse {
+  string message_id = 1;
+  string message = 2;
+  repeated string tags = 4;
+}
+
+message SubMessage {
+  string subfield = 1;
+}
+
+message UpdateMessageRequest {
+  string message_id = 1;
+  SubMessage sub = 2;
+  string message = 3;
+}
+
+message UpdateMessageResponse {
+  string message_id = 1;
+  SubMessage sub = 2;
+  string message = 3;
+}
+
+message CreateMessageRequest {
+  message Message {
+    SubMessage sub = 1;
+  }
+  string message_id = 1;
+  SubMessage sub = 2;
+  Message msg = 3;
+  string opt = 4;
+}
+
+message CreateMessageResponse {
+  message Message {
+    SubMessage sub = 1;
+  }
+  string message_id = 1;
+  SubMessage sub = 2;
+  Message msg = 3;
+  string opt = 4;
+}
